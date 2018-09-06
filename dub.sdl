@@ -1,0 +1,7 @@
+name "monomyst-core"
+description "Contains abstractions for low level stuff."
+authors "CodeMyst"
+copyright "Copyright © 2018, CodeMyst"
+license "MPL-2.0"
+targetPath "build/"
+dependency "xcb-d" version="~>2.1.0+1.11.1"
