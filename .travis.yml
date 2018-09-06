@@ -1,0 +1,6 @@
+language: d
+d:
+  - ldc
+script:
+  - chmod +x build.sh
+  - ./build.sh
