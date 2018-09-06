@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install curl
+          command: apt-get install -y curl
+      - run:
           name: Install DMD and dub
           command: curl -fsS https://dlang.org/install.sh | bash -s dmd
       - run:
