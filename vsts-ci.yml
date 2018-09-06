@@ -1,0 +1,13 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+steps:
+- script:
+    curl -fsS https://dlang.org/install.sh | bash -s dmd
+  displayName: 'Install DMD and dub'
+- script:
+    apt install -y ldc
+  displayName: 'Install LDC'
+- script:
+    ./build.sh
+  displayName: 'Build the project'
