@@ -6,11 +6,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install curl
-          command: apt-get install -y curl
-      - run:
           name: Install DMD and dub
-          command: curl -fsS https://dlang.org/install.sh | bash -s dmd
+          command: wget https://dlang.org/install.sh | bash -s dmd
       - run:
           name: Install LDC
           command: apt-get install -y ldc
