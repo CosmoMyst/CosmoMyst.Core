@@ -12,3 +12,4 @@ monomyst-core-test-*
 *.o
 *.obj
 *.lst
+build/
