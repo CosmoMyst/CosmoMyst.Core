@@ -2,8 +2,12 @@ import monomyst.core.window;
 
 void main ()
 {
+    import std.stdio : writeln;
+
     Window window = new Window ();
 
-    int i = 1;
-    while (i == 1) {}
+    while (!window.shouldClose)
+    {
+        window.pollEvents ();
+    }
 }

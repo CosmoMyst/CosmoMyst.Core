@@ -4,15 +4,29 @@ import xcb.xcb;
 
 public class Window
 {
+    @property bool shouldClose () { return _shouldClose; }
+    private bool _shouldClose;
+
     private xcb_connection_t* connection;
+
+    private xcb_generic_event_t* currentEvent;
+
+    private xcb_intern_atom_reply_t* reply2;
 
     this ()
     {
         import std.stdio : writeln;
+        import core.runtime : Runtime;
 
         int screenNumber;
 
         connection = xcb_connect (null, &screenNumber);
+
+        if (xcb_connection_has_error (connection))
+        {
+            writeln ("Error while openning a window.");
+            return;
+        }
 
         const xcb_setup_t* setup = xcb_get_setup (connection);
         xcb_screen_iterator_t iterator = xcb_setup_roots_iterator (setup);
@@ -29,20 +43,54 @@ public class Window
         writeln ("Black pixel ", screen.black_pixel);
 
         xcb_window_t window = xcb_generate_id (connection);
+        
+        const uint values = XCB_EVENT_MASK_EXPOSURE;
+        
         xcb_create_window (connection,
                            XCB_COPY_FROM_PARENT,
                            window,
                            screen.root,
                            0, 0,
-                           150, 150,
-                           10,
+                           400, 400,
+                           0,
                            XCB_WINDOW_CLASS_INPUT_OUTPUT,
                            screen.root_visual,
-                           0, null);
+                           XCB_CW_EVENT_MASK, &values);
+
+        xcb_intern_atom_cookie_t cookie = xcb_intern_atom (connection, 1, 12, "WM_PROTOCOLS");
+        xcb_intern_atom_reply_t* reply = xcb_intern_atom_reply (connection, cookie, null);
+        xcb_intern_atom_cookie_t cookie2 = xcb_intern_atom (connection, 0, 16, "WM_DELETE_WINDOW");
+        reply2 = xcb_intern_atom_reply (connection, cookie2, null);
+
+        xcb_change_property (connection, XCB_PROP_MODE_REPLACE, window, reply.atom, 4, 32, 1, &reply2.atom);
 
         xcb_map_window (connection, window);
 
         xcb_flush (connection);
+    }
+
+    void pollEvents ()
+    {
+        import std.stdio : writefln;
+
+        while ((currentEvent = xcb_wait_for_event (connection)) !is null)
+        {
+            switch (currentEvent.response_type & ~0x80)
+            {
+                case XCB_CLIENT_MESSAGE:
+                {
+                    if((cast (xcb_client_message_event_t*) currentEvent).data.data32 [0] == reply2.atom)
+                    {
+                        _shouldClose = true;
+                        return;
+                    }
+                } break;
+                default:
+                {
+                    writefln ("Event: %s", currentEvent.response_type);
+                } break;
+            }
+        }
     }
 
     ~this ()
