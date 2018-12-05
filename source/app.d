@@ -1,8 +1,7 @@
-import monomyst.core.window;
-
 void main ()
 {
     import std.stdio : writeln;
+    import monomyst.core : Window;
 
     Window window = new Window ();
 
