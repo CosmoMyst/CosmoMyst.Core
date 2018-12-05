@@ -7,7 +7,11 @@ public class Window
     @property bool shouldClose () { return _shouldClose; }
     private bool _shouldClose;
 
+    @property xcb_connection_t* xcbconnection () { return connection; }
     private xcb_connection_t* connection;
+
+    @property xcb_window_t xcbwindow () { return window; }
+    private xcb_window_t window;
 
     private xcb_generic_event_t* currentEvent;
 
@@ -42,7 +46,7 @@ public class Window
         writeln ("White pixel ", screen.white_pixel);
         writeln ("Black pixel ", screen.black_pixel);
 
-        xcb_window_t window = xcb_generate_id (connection);
+        window = xcb_generate_id (connection);
         
         const uint values = XCB_EVENT_MASK_EXPOSURE;
         
