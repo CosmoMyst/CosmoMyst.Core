@@ -17,7 +17,7 @@ public class Window
 
     private xcb_intern_atom_reply_t* reply2;
 
-    this ()
+    this (ushort width, ushort height)
     {
         import std.stdio : writeln;
         import core.runtime : Runtime;
@@ -55,7 +55,7 @@ public class Window
                            window,
                            screen.root,
                            0, 0,
-                           400, 400,
+                           width, height,
                            0,
                            XCB_WINDOW_CLASS_INPUT_OUTPUT,
                            screen.root_visual,
