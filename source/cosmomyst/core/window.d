@@ -1,4 +1,4 @@
-module monomyst.core.window;
+module cosmomyst.core.window;
 
 import xcb.xcb;
 

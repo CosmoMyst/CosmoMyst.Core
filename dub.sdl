@@ -1,4 +1,4 @@
-name "monomyst-core"
+name "cosmomyst-core"
 description "Contains abstractions for low level stuff."
 authors "CodeMyst"
 copyright "Copyright © 2018, CodeMyst"
