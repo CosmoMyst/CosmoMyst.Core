@@ -1,11 +1,11 @@
 void main ()
 {
     import std.stdio : writeln;
-    import cosmomyst.core : Window;
+    import cosmomyst.core : XCBWindow;
 
-    Window window = new Window (400, 400);
+    XCBWindow window = new XCBWindow (400, 400);
 
-    while (!window.shouldClose)
+    while (window.open)
     {
         window.pollEvents ();
     }
